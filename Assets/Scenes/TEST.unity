@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 783929846}
   - component: {fileID: 783929845}
   m_Layer: 0
-  m_Name: Power:HealthBBig
+  m_Name: Power:HealthBig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

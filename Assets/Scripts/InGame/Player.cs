@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -22,18 +23,24 @@ public class Player : MonoBehaviour
 	InputAction EscapeAction;
 	InputAction PauseAction;
 
-	[SerializeField] GameObject? reflectPointObj;
+	
 	public Vector2 reflectPoint;
 
 	Mode currentMode = Mode.None;   //We start on None so that the players won't be able to move before the countdown ends
 
-	[SerializeField] float moveSpd;
+	//Powerable Stats
+	public float moveSpd;
+	public float paddleScale = 1;
+	public bool isSticky = true; 
+	//
+
 	float moveSpdTime;
 	public float moveLimitX = 3.15f;
 	public float moveLimitZ = 6.75f;
 	Vector2 moveVector;
 
 	[SerializeField] GameObject? paddle;
+	[SerializeField] GameObject? reflectPointObj;
 	BoxCollider? boxCollider;
 	public bool isNoclip;
 
@@ -48,24 +55,6 @@ public class Player : MonoBehaviour
 	Character character;
 	int characterTest;
 
-
-
-
-	//bool isFocused;
-
-	//void OnApplicationFocus(bool hasFocus)
-	//{
-	//	isFocused = hasFocus;
-
-	//	if (isFocused)
-	//	{
-	//		Cursor.lockState = CursorLockMode.Locked;
-	//	}
-	//	else
-	//	{
-	//		Cursor.lockState = CursorLockMode.None;
-	//	}
-	//}
 
 	private void OnEnable()
 	{
@@ -96,7 +85,6 @@ public class Player : MonoBehaviour
 
 	private void ControlsInitialize()
 	{
-
 		//Might need to use these for when the game is Paused in order to switch between Game controls and Menu controls,
 		//not sure how much of this is handled automatically by Unity
 		MenuControlsMap = PlayerInputAsset.FindActionMap("MenuControls");
@@ -111,14 +99,19 @@ public class Player : MonoBehaviour
 
 	void Update()
 	{   // Update is called once per frame
-		if (currentMode == Mode.Menu)
-		{
-			MenuUpdate();
-		}
-		else if (currentMode == Mode.Game)
+		if (currentMode == Mode.Game)
 		{
 			GameUpdate();
 		}
+		else if (currentMode == Mode.Menu)
+		{
+			MenuUpdate();
+		}
+	}
+
+	void MenuUpdate()
+	{
+		//Currently unused, deletable since all Menu stuff uses built-in Unity UI functionality
 	}
 
 	void GameBegin()
@@ -130,14 +123,6 @@ public class Player : MonoBehaviour
 	{
 		currentMode = Mode.None;
 		transform.position = startPos;
-	}
-
-	void MenuUpdate()
-	{
-		if (MenuMove.ReadValue<Vector2>().x > 0.01)
-		{
-			//I think this method was intended to be menu navigation?
-		}
 	}
 
 	void GameUpdate()
@@ -194,15 +179,11 @@ public class Player : MonoBehaviour
 		//Debug.Log(collision.GetContact(0).point);
 	}
 
-	void ModeChange()   //Unused///Fix this up once we tackle events
-						/////This listens to "Mode change" event sent by certain buttons
-						/////I thiiiiiink we can send a variable via the event, maybe not
-						/////thee code will change depending on if we can or not.
+	public void ChangeWidth(float newScaleX)
 	{
-		currentMode = Mode.Menu;
-		currentMode = Mode.Game;
+		Vector3 currentScale = paddle.transform.lossyScale;
+		paddle.transform.localScale = new Vector3(currentScale.x*newScaleX, currentScale.y, currentScale.z);
 	}
-
 
 	enum Mode
 	{

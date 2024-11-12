@@ -42,14 +42,22 @@ public class PowerObject : MonoBehaviour
 		{
 			rb.transform.Translate(new Vector3(0, -speed * Time.timeScale, 0));
 		}
-
 	}
 
 	public void Appear(Vector3 spawnPoint)
 	{
 		transform.position = spawnPoint;
-		RandomPowerSelection();
 		BeginMovement();
+	}
+
+	private void BeginMovement()
+	{
+		speed = speedStart;
+	}
+
+	private void HaltMovement()
+	{
+		speed = 0f;
 	}
 
 	private void RandomPowerSelection()
@@ -64,31 +72,5 @@ public class PowerObject : MonoBehaviour
 		{
 			//switch type of power that this is too LightPlayer.PlayerPower[random]
 		}
-
-	}
-
-	public void Collect()
-	{
-
-	}
-
-	private void BeginMovement()
-	{
-		speed = speedStart;
-	}
-
-	private void HaltMovement()
-	{
-		speed = 0f;
-	}
-
-	private void OnTriggerEnter(Collider other)
-	{
-		if (transform.tag == "Powerup" && other.tag == "Paddle")
-		{
-			Player triggeredPlayer = GetComponent<Player>();
-
-		}
-		Debug.Log($"Trigger: {other.gameObject.name}");
 	}
 }

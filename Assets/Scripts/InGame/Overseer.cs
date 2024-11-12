@@ -81,8 +81,8 @@ public class Overseer : MonoBehaviour
 			}
 		}
 
-		Debug.Log(darkBalls[0].name);
-		Debug.Log(lightBalls[0].name);
+		//Debug.Log(darkBalls[0].name);
+		//Debug.Log(lightBalls[0].name);
 	}
 
 	public void NewRound()

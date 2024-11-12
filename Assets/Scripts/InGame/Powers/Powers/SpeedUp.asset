@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61a57e66f5573c142a78987d1e8a4eff, type: 3}
-  m_Name: MajorBonusPoint
+  m_Script: {fileID: 11500000, guid: 53046b6d078f61c499e0111c978d0dc7, type: 3}
+  m_Name: SpeedUp
   m_EditorClassIdentifier: 
-  amount: 999
+  amount: 1.5
+  currentStat: 2
