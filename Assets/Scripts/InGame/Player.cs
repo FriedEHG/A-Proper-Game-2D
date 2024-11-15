@@ -23,34 +23,35 @@ public class Player : MonoBehaviour
 	InputAction EscapeAction;
 	InputAction PauseAction;
 
-	
-	public Vector2 reflectPoint;
-
-	Mode currentMode = Mode.None;   //We start on None so that the players won't be able to move before the countdown ends
+	Mode currentMode = Mode.None;
 
 	//Powerable Stats
 	public float moveSpd;
 	public float paddleScale = 1;
-	public bool isSticky = true; 
+	public bool isSticky = true;
 	//
 
+	public Team currentTeam = Team.None;
 	float moveSpdTime;
 	public float moveLimitX = 3.15f;
 	public float moveLimitZ = 6.75f;
+	public Vector2 reflectPoint;
 	Vector2 moveVector;
+	Vector2 startPos;
 
 	[SerializeField] GameObject? paddle;
+	[SerializeField] GameObject? movingContainer;
 	[SerializeField] GameObject? reflectPointObj;
 	BoxCollider? boxCollider;
 	public bool isNoclip;
-
-	bool isPaused = false;
 	bool isPauseHeld = false;
+	bool isActionHeld = false;
 
-	Vector2 startPos;
+	public List<BallBehav> stuckBalls;
+	[SerializeField] Transform ballParent;
 
 	/// <summary>
-	/// ///////////////////////////////// 
+	/// /////////////////////Characters Stuff////////////////////// 
 	/// </summary>
 	Character character;
 	int characterTest;
@@ -81,6 +82,18 @@ public class Player : MonoBehaviour
 		boxCollider = paddle.GetComponent<BoxCollider>();
 		characterTest = Universals.lightCharacterTest;
 		startPos = transform.position;
+		stuckBalls = new List<BallBehav>{};
+		foreach (BallBehav ball in FindObjectsByType<BallBehav>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+		{
+			if (currentTeam == Team.Light && ball.currentTeam == BallBehav.Team.Light)
+			{
+				stuckBalls[0] = ball;
+			}
+			else if (currentTeam == Team.Dark && ball.currentTeam == BallBehav.Team.Dark)
+			{
+				stuckBalls[0] = ball;
+			}
+		}
 	}
 
 	private void ControlsInitialize()
@@ -132,10 +145,13 @@ public class Player : MonoBehaviour
 		moveVector = new Vector2(GameMove.ReadValue<Vector2>().x * moveSpdTime, (isNoclip ? GameMove.ReadValue<Vector2>().y : 0) * moveSpd);
 		reflectPoint = reflectPointObj.transform.position;
 
+		
+
 		if (moveVector.x != 0 || moveVector.y != 0)
 		{
 			GameMovement();
 		}
+
 		if (PauseAction.ReadValue<float>() > 0.1)
 		{
 			if (isPauseHeld == false)
@@ -145,41 +161,68 @@ public class Player : MonoBehaviour
 			}
 		}
 		else { isPauseHeld = false; }
+
+		if (GameAction.ReadValue<float>() > 0.1)
+		{
+			if (isActionHeld == false)
+			{
+				Fire();
+				isActionHeld = true;
+			}
+		}
+		else { isActionHeld = false; }
 	}
 
 	private void GameMovement()
 	{
-		if ((paddle.transform.position.x - moveSpdTime > -moveLimitX && moveVector.x < 0) ||    //not touching left wall && tryna move left
-			(paddle.transform.position.x + moveSpdTime < moveLimitX && moveVector.x > 0))       //not touching right wall && tryna move right
+		if ((movingContainer.transform.position.x - moveSpdTime > -moveLimitX && moveVector.x < 0) ||    //not touching left wall && tryna move left
+			(movingContainer.transform.position.x + moveSpdTime < moveLimitX && moveVector.x > 0))       //not touching right wall && tryna move right
 		{   //allow the movement
-			paddle.transform.Translate(moveVector.x, 0, 0);
+			movingContainer.transform.Translate(moveVector.x, 0, 0);
 		}
 
 		if (isNoclip &&
-			((paddle.transform.position.y - moveSpdTime > -moveLimitZ && moveVector.y < 0) ||    //not touching bottom wall && tryna move down
-			(paddle.transform.position.y + moveSpdTime < moveLimitZ && moveVector.y > 0)))       //not touching top wall && tryna move up
+			((movingContainer.transform.position.y - moveSpdTime > -moveLimitZ && moveVector.y < 0) ||    //not touching bottom wall && tryna move down
+			(movingContainer.transform.position.y + moveSpdTime < moveLimitZ && moveVector.y > 0)))       //not touching top wall && tryna move up
 		{
-			paddle.transform.Translate(0, 0, moveVector.y);
+			movingContainer.transform.Translate(0, 0, moveVector.y);
 		}
 	}
 
 	private void PauseCheck()
 	{
-		Debug.Log($"PauseCheck Player:{gameObject.name}");
 		EventScript.PauseGame.Invoke();
 	}
 
-	private void OnTriggerEnter(Collider other)
+	private void Fire()
 	{
-		//Debug.Log("ye");
+		UnstickBalls();
+		Debug.Log($"Fired Paddle: {name}");
+		//Additional Power Stuff here 
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	public void UnstickBalls()
 	{
-		//Debug.Log(collision.GetContact(0).point);
+		foreach (BallBehav ball in stuckBalls)
+		{
+			Debug.Log($"Ball: {ball.name}, Ball Speed: {ball.speed}, Ball SpeedStart: {ball.speedStart}");
+			ball.speed = ball.speedStart;
+			ball.transform.parent = ballParent;
+		}
+		stuckBalls.Clear();
 	}
 
-	public void ChangeWidth(float newScaleX)
+	//private void OnTriggerEnter(Collider other)
+	//{
+	//	//Debug.Log("ye");
+	//}
+
+	//private void OnCollisionEnter(Collision collision)
+	//{
+	//	//Debug.Log(collision.GetContact(0).point);
+	//}
+
+	public void ChangePaddleWidth(float newScaleX)
 	{
 		Vector3 currentScale = paddle.transform.lossyScale;
 		paddle.transform.localScale = new Vector3(currentScale.x*newScaleX, currentScale.y, currentScale.z);
@@ -190,5 +233,12 @@ public class Player : MonoBehaviour
 		None,
 		Menu,
 		Game
+	}
+
+	public enum Team
+	{
+		None,
+		Light,
+		Dark
 	}
 }

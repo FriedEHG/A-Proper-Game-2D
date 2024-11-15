@@ -272,7 +272,7 @@ GameObject:
   - component: {fileID: 47424116}
   - component: {fileID: 47424115}
   m_Layer: 7
-  m_Name: BallDark
+  m_Name: OGBallDark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -343,10 +343,11 @@ MonoBehaviour:
   movementDirection: {x: 0, y: 0}
   startingPos: {x: 0, y: 0, z: 0}
   speedStart: 7.5
+  speed: 0
   currentTeam: 1
   darkMaterial: {fileID: 2100000, guid: 20e319fcfd3bb374f87c291600d28fb7, type: 2}
   lightMaterial: {fileID: 2100000, guid: 85d1b6694d8627543a3e82c7bf87d1d5, type: 2}
-  isTrue: 1
+  isOGBall: 1
 --- !u!212 &47424118
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -407,12 +408,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47424114}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 4, z: -0.88}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2107740956}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &54836728
 GameObject:
@@ -2135,7 +2136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &255478779
 Transform:
   m_ObjectHideFlags: 0
@@ -2216,10 +2217,11 @@ MonoBehaviour:
   movementDirection: {x: 0, y: 0}
   startingPos: {x: 0, y: 0, z: 0}
   speedStart: 7.5
+  speed: 0
   currentTeam: 1
   darkMaterial: {fileID: 2100000, guid: 20e319fcfd3bb374f87c291600d28fb7, type: 2}
   lightMaterial: {fileID: 2100000, guid: 85d1b6694d8627543a3e82c7bf87d1d5, type: 2}
-  isTrue: 0
+  isOGBall: 0
 --- !u!212 &255478783
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2764,6 +2766,51 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &296023463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 296023464}
+  - component: {fileID: 296023465}
+  m_Layer: 0
+  m_Name: MovingContainer2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &296023464
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296023463}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -4.5, z: -0.18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1859618863}
+  m_Father: {fileID: 1746494812}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &296023465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296023463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15b44102ade941c44bf3261570fbd663, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &312238145
 GameObject:
   m_ObjectHideFlags: 0
@@ -3152,7 +3199,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &335406305
 Transform:
   m_ObjectHideFlags: 0
@@ -3233,10 +3280,11 @@ MonoBehaviour:
   movementDirection: {x: 0, y: 0}
   startingPos: {x: 0, y: 0, z: 0}
   speedStart: 7.5
+  speed: 0
   currentTeam: 1
   darkMaterial: {fileID: 2100000, guid: 20e319fcfd3bb374f87c291600d28fb7, type: 2}
   lightMaterial: {fileID: 2100000, guid: 85d1b6694d8627543a3e82c7bf87d1d5, type: 2}
-  isTrue: 0
+  isOGBall: 0
 --- !u!212 &335406309
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3548,6 +3596,51 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &422343534
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 422343535}
+  - component: {fileID: 422343536}
+  m_Layer: 0
+  m_Name: MovingContainer1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &422343535
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422343534}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.5, z: -0.27}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1158960829}
+  m_Father: {fileID: 1024074662}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &422343536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422343534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15b44102ade941c44bf3261570fbd663, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &443730245
 GameObject:
   m_ObjectHideFlags: 0
@@ -3567,7 +3660,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &443730246
 Transform:
   m_ObjectHideFlags: 0
@@ -3648,10 +3741,11 @@ MonoBehaviour:
   movementDirection: {x: 0, y: 0}
   startingPos: {x: 0, y: 0, z: 0}
   speedStart: 7.5
+  speed: 0
   currentTeam: 2
   darkMaterial: {fileID: 2100000, guid: 20e319fcfd3bb374f87c291600d28fb7, type: 2}
   lightMaterial: {fileID: 2100000, guid: 85d1b6694d8627543a3e82c7bf87d1d5, type: 2}
-  isTrue: 0
+  isOGBall: 0
 --- !u!212 &443730250
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4549,7 +4643,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &605508742
 Transform:
   m_ObjectHideFlags: 0
@@ -4630,10 +4724,11 @@ MonoBehaviour:
   movementDirection: {x: 0, y: 0}
   startingPos: {x: 0, y: 0, z: 0}
   speedStart: 7.5
+  speed: 0
   currentTeam: 1
   darkMaterial: {fileID: 2100000, guid: 20e319fcfd3bb374f87c291600d28fb7, type: 2}
   lightMaterial: {fileID: 2100000, guid: 85d1b6694d8627543a3e82c7bf87d1d5, type: 2}
-  isTrue: 0
+  isOGBall: 0
 --- !u!212 &605508746
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4722,6 +4817,8 @@ MonoBehaviour:
   darkScoreText: {fileID: 346458022}
   pauseEventSystem: {fileID: 2124777401}
   gameendEventSystem: {fileID: 1963115899}
+  darkBalls: []
+  lightBalls: []
 --- !u!4 &637880235
 Transform:
   m_ObjectHideFlags: 0
@@ -5266,7 +5363,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1005328037
 Transform:
   m_ObjectHideFlags: 0
@@ -5347,10 +5444,11 @@ MonoBehaviour:
   movementDirection: {x: 0, y: 0}
   startingPos: {x: 0, y: 0, z: 0}
   speedStart: 7.5
+  speed: 0
   currentTeam: 2
   darkMaterial: {fileID: 2100000, guid: 20e319fcfd3bb374f87c291600d28fb7, type: 2}
   lightMaterial: {fileID: 2100000, guid: 85d1b6694d8627543a3e82c7bf87d1d5, type: 2}
-  isTrue: 0
+  isOGBall: 0
 --- !u!212 &1005328041
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5567,7 +5665,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1158960829}
+  - {fileID: 422343535}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1024074664
@@ -5583,15 +5681,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerInputAsset: {fileID: -944628639613478452, guid: 24a0f2af470bf364e8029d43ad069871, type: 3}
-  reflectPointObj: {fileID: 141385529}
-  reflectPoint: {x: 0, y: 0}
   moveSpd: 6
   paddleScale: 0
   isSticky: 1
+  currentTeam: 0
   moveLimitX: 3.15
   moveLimitZ: 6.75
+  reflectPoint: {x: 0, y: 0}
   paddle: {fileID: 1158960828}
+  movingContainer: {fileID: 422343534}
+  reflectPointObj: {fileID: 141385529}
   isNoclip: 0
+  stuckBalls: []
+  ballParent: {fileID: 2107740956}
 --- !u!54 &1024074665
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5928,14 +6030,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1158960828}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.5, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 141385530}
   - {fileID: 2095143261}
-  m_Father: {fileID: 1024074662}
+  m_Father: {fileID: 422343535}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1158960830
 SpriteRenderer:
@@ -6063,7 +6165,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1204436958
 Transform:
   m_ObjectHideFlags: 0
@@ -6144,10 +6246,11 @@ MonoBehaviour:
   movementDirection: {x: 0, y: 0}
   startingPos: {x: 0, y: 0, z: 0}
   speedStart: 7.5
+  speed: 0
   currentTeam: 2
   darkMaterial: {fileID: 2100000, guid: 20e319fcfd3bb374f87c291600d28fb7, type: 2}
   lightMaterial: {fileID: 2100000, guid: 85d1b6694d8627543a3e82c7bf87d1d5, type: 2}
-  isTrue: 0
+  isOGBall: 0
 --- !u!212 &1204436962
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7734,7 +7837,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1859618863}
+  - {fileID: 296023464}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1746494814
@@ -7750,15 +7853,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerInputAsset: {fileID: -944628639613478452, guid: c005c837e0be7804188a7da267dadd79, type: 3}
-  reflectPointObj: {fileID: 1755990768}
-  reflectPoint: {x: 0, y: 0}
   moveSpd: 6
   paddleScale: 0
   isSticky: 1
+  currentTeam: 0
   moveLimitX: 3.15
   moveLimitZ: 6.75
+  reflectPoint: {x: 0, y: 0}
   paddle: {fileID: 1859618862}
+  movingContainer: {fileID: 296023463}
+  reflectPointObj: {fileID: 1755990768}
   isNoclip: 0
+  stuckBalls: []
+  ballParent: {fileID: 2107740956}
 --- !u!54 &1746494815
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8469,14 +8576,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1859618862}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.5, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1755990769}
   - {fileID: 255346575}
-  m_Father: {fileID: 1746494812}
+  m_Father: {fileID: 296023464}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1859618864
 SpriteRenderer:
@@ -10053,7 +10160,7 @@ GameObject:
   - component: {fileID: 2106391288}
   - component: {fileID: 2106391287}
   m_Layer: 7
-  m_Name: BallLight
+  m_Name: OGBallLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10119,12 +10226,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2106391281}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -4, z: -0.31}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2107740956}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2106391286
 MonoBehaviour:
@@ -10143,10 +10250,11 @@ MonoBehaviour:
   movementDirection: {x: 0, y: 0}
   startingPos: {x: 0, y: 0, z: 0}
   speedStart: 7.5
+  speed: 0
   currentTeam: 2
   darkMaterial: {fileID: 2100000, guid: 20e319fcfd3bb374f87c291600d28fb7, type: 2}
   lightMaterial: {fileID: 2100000, guid: 85d1b6694d8627543a3e82c7bf87d1d5, type: 2}
-  isTrue: 1
+  isOGBall: 1
 --- !u!135 &2106391287
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10205,7 +10313,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2107740956}
   m_Layer: 0
-  m_Name: BallReserve
+  m_Name: BallParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10226,6 +10334,8 @@ Transform:
   m_Children:
   - {fileID: 790563573}
   - {fileID: 1189492976}
+  - {fileID: 2106391283}
+  - {fileID: 47424119}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2108441664
@@ -10573,8 +10683,6 @@ SceneRoots:
   - {fileID: 1318827967}
   - {fileID: 1948934072}
   - {fileID: 2107740956}
-  - {fileID: 2106391283}
-  - {fileID: 47424119}
   - {fileID: 1024074662}
   - {fileID: 1746494812}
   - {fileID: 2092763563}

@@ -29,8 +29,8 @@ public class Overseer : MonoBehaviour
 
 	bool isPaused = false;
 
-	List<BallBehav> darkBalls = new List<BallBehav>();
-	List<BallBehav> lightBalls = new List<BallBehav>();
+	public List<BallBehav> darkBalls = new List<BallBehav>();
+	public List<BallBehav> lightBalls = new List<BallBehav>();
 
 	public void Start()
 	{
@@ -68,18 +68,19 @@ public class Overseer : MonoBehaviour
 
 		foreach (var obj in darkBalls)
 		{/*After we collect the list, disable all of the clones in the clone pool*/
-			if (!obj.isTrue)
+			if (!obj.isOGBall)
 			{
 				obj.gameObject.SetActive(false);
 			}
 		}
 		foreach (var obj in lightBalls)
 		{
-			if (!obj.isTrue)
+			if (!obj.isOGBall)
 			{
 				obj.gameObject.SetActive(false);
 			}
 		}
+		//Stick the OG balls to the paddles at the start
 
 		//Debug.Log(darkBalls[0].name);
 		//Debug.Log(lightBalls[0].name);
@@ -143,24 +144,20 @@ public class Overseer : MonoBehaviour
 			Debug.Log("UnPaused");
 		}
 	}
-
 	public void Pause()
 	{
 		Time.timeScale = 0.0f;
 		pauseScreen.SetActive(true);
 	}
-
 	public void Resume()
 	{
 		Time.timeScale = 1.0f;
 		pauseScreen.SetActive(false);
 	}
-
 	public void Restart()   //calls from outside forces
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
-
 	public void ScoreFor(string PlayerColor)
 	{   //This is the color of the player THAT SCORED
 		if (PlayerColor != null)
@@ -246,7 +243,6 @@ public class Overseer : MonoBehaviour
 		}
 		return count;
 	}
-
 	int ActiveCountDark()
 	{
 		int count = 0;

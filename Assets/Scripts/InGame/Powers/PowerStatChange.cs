@@ -23,7 +23,7 @@ public class PowerStatChange : PowerScriptableObj
 				break;
 
 			case stat.WidthScale:
-				target.GetComponentInParent<Player>().ChangeWidth(amount);
+				target.GetComponentInParent<Player>().ChangePaddleWidth(amount);
 				break;
 
 

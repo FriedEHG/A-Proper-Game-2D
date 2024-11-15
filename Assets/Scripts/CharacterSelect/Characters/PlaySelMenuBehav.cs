@@ -73,7 +73,7 @@ public class PlaySelMenuBehav : MonoBehaviour
 	public void CharacterSelectDark(int charnum)
 	{
 		Universals.darkCharacterTest = charnum;
-		Debug.Log($"LightCharacter: {charnum}");
+		Debug.Log($"DarkCharacter: {charnum}");
 		darkCharSelected = true;
 
 		darkPlayerCharDisplay.text = $"DarkPlayer has selected Character: {charnum}";

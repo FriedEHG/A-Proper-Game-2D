@@ -2,21 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static GoalBehav;
 
 public class BallBehav : MonoBehaviour
 {
-
 	//ALL Ball spawning and despawning is handled in the Overseer
-
-
 
 	[SerializeField] Overseer overseer;
 	[SerializeField] Vector2 startingDirection;
 	public Vector2 movementDirection;
 	[SerializeField] public Vector3 startingPos;
 	public float speedStart = 5f; // Start speed of the ball
-	private float speed = 0f; // Speed of the ball
+	public float speed = 0f; // Speed of the ball
 
 	private Rigidbody rb; // Reference to the Rigidbody2D component
 	public Team currentTeam;
@@ -25,7 +23,7 @@ public class BallBehav : MonoBehaviour
 	public Material darkMaterial;
 	public Material lightMaterial;
 
-	public bool isTrue = false;		//Disable this bool in editor on all balls Except one
+	public bool isOGBall;		//Disable this bool in editor on all balls Except one
 
 	void Start()
 	{
@@ -35,7 +33,6 @@ public class BallBehav : MonoBehaviour
 		EventScript.GameWon.AddListener(Halt);
 
 		InitializeVariables();
-
 	}
 
 	void Update()
@@ -80,7 +77,6 @@ public class BallBehav : MonoBehaviour
 	void Halt()
 	{
 		speed = 0f;
-		movementDirection = Vector3.zero;
 	}
 
 	void OnCollisionEnter(Collision collision)
@@ -90,9 +86,16 @@ public class BallBehav : MonoBehaviour
 		// Bounce off the walls
 		if (otherObj.CompareTag("Paddle"))
 		{
+			Player player = otherObj.GetComponent<Player>();
+
 			// Reflect the ball's direction based on the normal of the collision
-			Vector2 reflectPoint = otherObj.GetComponent<Player>().reflectPoint;
+			Vector2 reflectPoint = player.reflectPoint;
 			ReflectPaddle(collision, reflectPoint);
+
+			if (player.isSticky)
+			{   //Set speed to zero After we change the direction
+				StickyStick(player);
+			}
 		}
 		else if (otherObj.tag == "Brick")
 		{
@@ -129,6 +132,13 @@ public class BallBehav : MonoBehaviour
 				StandardReflect(collision);
 			}
 		}
+	}
+
+	private void StickyStick(Player player)
+	{
+		Halt();
+		player.stuckBalls.Add(this);
+		transform.parent = player.GetComponentInChildren<MovingContainer>().gameObject.transform;
 	}
 
 	private void ReflectPaddle(Collision collision, Vector2 reflectPoint)
