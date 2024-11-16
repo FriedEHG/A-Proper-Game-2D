@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53046b6d078f61c499e0111c978d0dc7, type: 3}
   m_Name: WidePaddle
   m_EditorClassIdentifier: 
+  currentType: 4
   amount: 3
-  currentStat: 3

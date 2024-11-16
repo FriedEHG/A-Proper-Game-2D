@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
 	public bool isSticky = true;
 	//
 
-	public Team currentTeam = Team.None;
+	public Team currentTeam = Team.CHANGETHIS;
 	float moveSpdTime;
 	public float moveLimitX = 3.15f;
 	public float moveLimitZ = 6.75f;
@@ -82,18 +82,8 @@ public class Player : MonoBehaviour
 		boxCollider = paddle.GetComponent<BoxCollider>();
 		characterTest = Universals.lightCharacterTest;
 		startPos = transform.position;
-		stuckBalls = new List<BallBehav>{};
-		foreach (BallBehav ball in FindObjectsByType<BallBehav>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
-		{
-			if (currentTeam == Team.Light && ball.currentTeam == BallBehav.Team.Light)
-			{
-				stuckBalls[0] = ball;
-			}
-			else if (currentTeam == Team.Dark && ball.currentTeam == BallBehav.Team.Dark)
-			{
-				stuckBalls[0] = ball;
-			}
-		}
+		stuckBalls = new List<BallBehav>();
+
 	}
 
 	private void ControlsInitialize()
@@ -130,6 +120,15 @@ public class Player : MonoBehaviour
 	void GameBegin()
 	{
 		currentMode = Mode.Game;
+
+		foreach (BallBehav ball in FindObjectsByType<BallBehav>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+		{
+			if (currentTeam == Team.Light && ball.currentTeam == BallBehav.Team.Light
+				|| currentTeam == Team.Dark && ball.currentTeam == BallBehav.Team.Dark)
+			{
+				ball.StickyStick(this);
+			}
+		}
 	}
 
 	void GameReset()
@@ -144,8 +143,6 @@ public class Player : MonoBehaviour
 		moveSpdTime = moveSpd * Time.deltaTime;
 		moveVector = new Vector2(GameMove.ReadValue<Vector2>().x * moveSpdTime, (isNoclip ? GameMove.ReadValue<Vector2>().y : 0) * moveSpd);
 		reflectPoint = reflectPointObj.transform.position;
-
-		
 
 		if (moveVector.x != 0 || moveVector.y != 0)
 		{
@@ -237,7 +234,7 @@ public class Player : MonoBehaviour
 
 	public enum Team
 	{
-		None,
+		CHANGETHIS,
 		Light,
 		Dark
 	}

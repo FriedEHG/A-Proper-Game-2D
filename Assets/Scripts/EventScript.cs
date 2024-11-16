@@ -17,4 +17,7 @@ static public class EventScript
 	static public UnityEvent GameWon = new UnityEvent();
 
 	static public UnityEvent PlayUnselectColorChange = new UnityEvent();
+
+	static public UnityEvent BrickBreakLight = new UnityEvent();
+	static public UnityEvent BrickBreakDark = new UnityEvent();
 }

@@ -3,42 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(menuName = "Powers/StatUp")]
+[CreateAssetMenu(menuName = "PongPower")]
 
-public class PowerStatChange : PowerScriptableObj
+public class PongPower : PowerScriptableObj
 {
 	public float amount;
-	public stat currentStat;
 
 	public override void Apply(GameObject target)
 	{
-		switch (currentStat)
+		switch (currentType)
 		{
-			case stat.Sticky:
+			case type.Sticky:
 				target.GetComponentInParent<Player>().isSticky = true;
 				break;
 
-			case stat.SpeedScale:
+			case type.BallSpeedScale:
 				target.GetComponentInParent<Player>().moveSpd *= amount;
 				break;
 
-			case stat.WidthScale:
+			case type.PaddleSpeedScale:
+
+				break;
+
+			case type.PaddleWidthScale:
 				target.GetComponentInParent<Player>().ChangePaddleWidth(amount);
 				break;
 
 
 			default:
+				Debug.LogError("Unchanged Power Type. Change power type within this powers Asset");
 				break;
 		}
-	}
-
-
-	public enum stat
-	{
-		None = 0,
-		Sticky,
-		SpeedScale,
-		WidthScale,
-
 	}
 }

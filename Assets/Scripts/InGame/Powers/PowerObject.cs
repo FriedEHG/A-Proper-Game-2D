@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerObject : MonoBehaviour
+						//is just in charge of the physical object that holds the power.
 {
 	[SerializeField] float speedStart = 0.02f;
 	float speed;
-	[SerializeField] bool isDark = true;
+	bool isDark;
+	PowerBase ourPower;
 	Rigidbody rb;
 
 	// Start is called before the first frame update
@@ -21,7 +23,10 @@ public class PowerObject : MonoBehaviour
 	private void InitializeVariables()
 	{
 		rb = GetComponent<Rigidbody>();
+		ourPower = GetComponent<PowerBase>();
+		isDark = (ourPower.currentTeam == PowerBase.team.Dark);
 	}
+
 	private void InitializeEventListeners()
 	{
 		EventScript.BeginGame.AddListener(BeginMovement);
@@ -58,19 +63,5 @@ public class PowerObject : MonoBehaviour
 	private void HaltMovement()
 	{
 		speed = 0f;
-	}
-
-	private void RandomPowerSelection()
-	{
-		int random = Mathf.RoundToInt(Random.Range(0.51f, 3.49f));
-
-		if (isDark)
-		{
-			//switch type of power that this is too DarkPlayer.PlayerPower[random]
-		}
-		else
-		{
-			//switch type of power that this is too LightPlayer.PlayerPower[random]
-		}
 	}
 }

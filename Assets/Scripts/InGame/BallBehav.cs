@@ -23,7 +23,10 @@ public class BallBehav : MonoBehaviour
 	public Material darkMaterial;
 	public Material lightMaterial;
 
-	public bool isOGBall;		//Disable this bool in editor on all balls Except one
+	public bool isOGBall;       //Disable this bool in editor on all balls Except one
+
+	private Player ourPlayer;
+
 
 	void Start()
 	{
@@ -63,9 +66,8 @@ public class BallBehav : MonoBehaviour
 	public void GameBegin()
 	{
 		transform.SetPositionAndRotation(startingPos, Quaternion.identity);
-		speed = speedStart;
 		movementDirection = startingDirection.normalized;
-		rb.velocity = movementDirection * speed;
+		//speed = speedStart;
 	}
 
 	void GameReset()
@@ -134,7 +136,7 @@ public class BallBehav : MonoBehaviour
 		}
 	}
 
-	private void StickyStick(Player player)
+	public void StickyStick(Player player)
 	{
 		Halt();
 		player.stuckBalls.Add(this);
