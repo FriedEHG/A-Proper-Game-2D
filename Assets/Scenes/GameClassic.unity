@@ -277,7 +277,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &47424115
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5859,7 +5859,7 @@ MonoBehaviour:
   PlayerInputAsset: {fileID: -944628639613478452, guid: 24a0f2af470bf364e8029d43ad069871, type: 3}
   moveSpd: 6
   paddleScale: 0
-  isSticky: 1
+  isSticky: 0
   currentTeam: 2
   moveLimitX: 3.15
   moveLimitZ: 6.75
@@ -8095,7 +8095,7 @@ MonoBehaviour:
   PlayerInputAsset: {fileID: -944628639613478452, guid: c005c837e0be7804188a7da267dadd79, type: 3}
   moveSpd: 6
   paddleScale: 0
-  isSticky: 1
+  isSticky: 0
   currentTeam: 1
   moveLimitX: 3.15
   moveLimitZ: 6.75
