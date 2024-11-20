@@ -15,5 +15,6 @@ public abstract class PowerScriptableObj : ScriptableObject
 		BallSpeedScale,
 		PaddleSpeedScale,
 		PaddleWidthScale,
+		Multiball,
 	}
 }

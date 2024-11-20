@@ -26,6 +26,7 @@ public class BallBehav : MonoBehaviour
 	public bool isOGBall;       //Disable this bool in editor on all balls Except one
 
 	private Player ourPlayer;
+	private GameObject ourSpawnPoint;
 
 
 	void Start()
@@ -36,6 +37,7 @@ public class BallBehav : MonoBehaviour
 		EventScript.GameWon.AddListener(Halt);
 
 		InitializeVariables();
+		SetStartPos();
 	}
 
 	void Update()
@@ -43,35 +45,95 @@ public class BallBehav : MonoBehaviour
 		rb.velocity = movementDirection * speed;
 	}
 
+	public BallBehav()
+	{
+
+	}
+
 	private void InitializeVariables()
 	{
 		sphereCollider = GetComponent<SphereCollider>();
 		rb = GetComponent<Rigidbody>();
 
+		speed = 0f;
+		movementDirection = startingDirection.normalized;   //potentially we could randomize this after each spawn
+
+		foreach (Player player in FindObjectsByType<Player>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+		{
+			if (currentTeam == Team.Light && player.currentTeam == Player.Team.Light
+				|| currentTeam == Team.Dark && player.currentTeam == Player.Team.Dark)
+			{
+				ourPlayer = player;
+
+				Transform[] childrenTransforms = ourPlayer.GetComponentsInChildren<Transform>();
+
+				foreach (var childTransform in childrenTransforms)
+				{
+					if (childTransform != ourPlayer.transform && childTransform.CompareTag("BallSpawn"))
+					{
+						ourSpawnPoint = childTransform.gameObject; // Add matching child to the list
+					}
+				}
+
+//				Debug.Log(ourSpawnPoint.name);
+			}
+		}
+	}
+
+	private void SetStartPos()
+	{
 		if (currentTeam == Team.Light)
 		{   //set each ball to its team height
-			startingPos = new Vector3(transform.position.x, transform.position.y, Universals.lightBallHeight);
+			startingPos = new Vector3(ourSpawnPoint.transform.position.x, ourSpawnPoint.transform.position.y, Universals.lightBallHeight);
 			gameObject.GetComponent<Renderer>().material = lightMaterial;
 		}
 		else
 		{
-			startingPos = new Vector3(transform.position.x, transform.position.y, Universals.darkBallHeight);
+			startingPos = new Vector3(ourSpawnPoint.transform.position.x, ourSpawnPoint.transform.position.y, Universals.darkBallHeight);
 			gameObject.GetComponent<Renderer>().material = darkMaterial;
 		}
-
-		speed = 0f;
-		movementDirection = startingDirection.normalized;   //potentially we could randomize this after each spawn
 	}
 
 	public void GameBegin()
 	{
+		SetStartPos();
 		transform.SetPositionAndRotation(startingPos, Quaternion.identity);
 		movementDirection = startingDirection.normalized;
+		if (!isOGBall)
+		{
+			gameObject.SetActive(false);
+		}
+
+
 		//speed = speedStart;
+
+
+		StickyStick(ourPlayer);
+	}
+
+	public void Respawn()
+	{
+		SetStartPos();
+		transform.SetPositionAndRotation(startingPos, Quaternion.identity);
+		//Debug.Log(ourPlayer.name);
+		movementDirection = startingDirection.normalized;
+		StickyStick(ourPlayer);
+	}
+
+	public void GameBeginMultiball()
+	{
+		SetStartPos();
+		transform.SetPositionAndRotation(startingPos, Quaternion.identity);
+		movementDirection = startingDirection.normalized;
+
+		speed = speedStart;
+
+		//StickyStick(ourPlayer);
 	}
 
 	void GameReset()
 	{
+		SetStartPos();
 		transform.position = startingPos;
 		movementDirection = Vector3.zero;
 	}
@@ -103,7 +165,7 @@ public class BallBehav : MonoBehaviour
 		{
 			if (otherObj.GetComponent<BrickBehav>().currentTeam == BrickBehav.Team.Dark && currentTeam == Team.Light ||
 				otherObj.GetComponent<BrickBehav>().currentTeam == BrickBehav.Team.Light && currentTeam == Team.Dark)
-			{	//IF the brick is the opposite team as the ball
+			{   //IF the brick is the opposite team as the ball
 				BrickBehav brickBehav = otherObj.GetComponent<BrickBehav>();
 				StandardReflect(collision);
 				brickBehav.ChangeTeam();    //send the brick to the other plane and change it's colors
@@ -113,7 +175,7 @@ public class BallBehav : MonoBehaviour
 		{
 			GoalBehav collidedGoal = collision.gameObject.GetComponent<GoalBehav>();
 			if (collidedGoal != null)
-			{	//If we collided with a Goal wall...
+			{   //If we collided with a Goal wall...
 				if (collidedGoal.currentGoalType == GoalType.Light && currentTeam == Team.Dark)
 				{
 					overseer.ScoreFor("Dark");
@@ -130,7 +192,7 @@ public class BallBehav : MonoBehaviour
 				}
 			}
 			else
-			{	//else if it is just a Regular wall...
+			{   //else if it is just a Regular wall...
 				StandardReflect(collision);
 			}
 		}

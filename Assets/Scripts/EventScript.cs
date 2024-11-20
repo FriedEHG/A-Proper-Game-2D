@@ -12,7 +12,7 @@ static public class EventScript
 	static public UnityEvent BeginGame = new UnityEvent();
 	static public UnityEvent PointScored = new UnityEvent();
 	static public UnityEvent NewRound = new UnityEvent();
-	static public UnityEvent<GameObject> SelfGoal = new UnityEvent<GameObject>();
+	//static public UnityEvent<GameObject> SelfGoal = new UnityEvent<GameObject>(); unused?
 
 	static public UnityEvent GameWon = new UnityEvent();
 
@@ -20,4 +20,6 @@ static public class EventScript
 
 	static public UnityEvent BrickBreakLight = new UnityEvent();
 	static public UnityEvent BrickBreakDark = new UnityEvent();
+
+	static public UnityEvent<bool, Vector3> MultiballCall = new UnityEvent<bool, Vector3>();
 }

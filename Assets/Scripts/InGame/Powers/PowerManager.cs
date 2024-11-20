@@ -60,7 +60,7 @@ public class PowerManager : MonoBehaviour
 		//Light
 		foreach (PowerBase powAll in powersAllInScene)
 		{
-			foreach (var powChar in powersCharLight)
+			foreach (PowerBase powChar in powersCharLight)
 			{
 				if (powAll.powerTemplate.currentType == powChar.powerTemplate.currentType
 					&& powAll.currentTeam == PowerBase.team.Light)
@@ -71,7 +71,7 @@ public class PowerManager : MonoBehaviour
 		}
 	}
 
-	public void PowerCheckLight()
+	public void PowerCheckLight()		//SENDS OUT A DEBUG WHEN A POWER IS SUPPOSED TO SPAWN
 	{
 		float randChance = Random.Range(0f, 1f);
 		int randPow = Mathf.RoundToInt(Random.Range(0.51f, 3.49f));  //Subtract 0.49 from min and add 0.49 to max in order to have more even random distribution
@@ -83,7 +83,7 @@ public class PowerManager : MonoBehaviour
 		}
 	}
 
-	public void PowerCheckDark()
+	public void PowerCheckDark()        //SENDS OUT A DEBUG WHEN A POWER IS SUPPOSED TO SPAWN
 	{
 		float randChance = Random.Range(0f, 1f);
 		int randPow = Mathf.RoundToInt(Random.Range(0.51f, 3.49f));  //Subtract 0.49 from min and add 0.49 to max in order to have more even random distribution

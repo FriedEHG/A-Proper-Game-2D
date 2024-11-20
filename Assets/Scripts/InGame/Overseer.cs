@@ -38,6 +38,7 @@ public class Overseer : MonoBehaviour
 		EventScript.PauseGame.AddListener(PauseCheck);
 		EventScript.ResumeGame.AddListener(Resume);
 		EventScript.NewRound.AddListener(NewRound);
+		EventScript.MultiballCall.AddListener(SpawnMultiball);
 
 		VariableInitialize();
 		NewRound();
@@ -205,7 +206,7 @@ public class Overseer : MonoBehaviour
 
 		if (team == BallBehav.Team.Dark)
 		{
-			if (ActiveCountDark()>1)	//if there are multiple balls, dont respawn the one that just left
+			if (ActiveBallCountDark()>1)	//if there are multiple balls, dont respawn the one that just left
 			{
 				ball.gameObject.SetActive(false);
 			}
@@ -218,7 +219,7 @@ public class Overseer : MonoBehaviour
 		}
 		else if (team == BallBehav.Team.Light)
 		{
-			if (ActiveCountLight() > 1)  //if there are multiple balls, dont respawn the one that just left
+			if (ActiveBallCountLight() > 1)  //if there are multiple balls, dont respawn the one that just left
 			{
 				ball.gameObject.SetActive(false);
 			}
@@ -231,7 +232,7 @@ public class Overseer : MonoBehaviour
 		}
 	}
 
-	int ActiveCountLight()
+	int ActiveBallCountLight()
 	{
 		int count = 0;
 		foreach (var obj in lightBalls)
@@ -243,7 +244,8 @@ public class Overseer : MonoBehaviour
 		}
 		return count;
 	}
-	int ActiveCountDark()
+
+	int ActiveBallCountDark()
 	{
 		int count = 0;
 		foreach (var obj in darkBalls)
@@ -256,6 +258,36 @@ public class Overseer : MonoBehaviour
 		return count;
 	}
 
+	public void SpawnMultiball(bool isDark, Vector3 pos)
+	{
+		Debug.Log($"isDark: {isDark}, pos: {pos}");
+		if (isDark)
+		{
+			for (int i = darkBalls.Count; i > 0; i--)
+			{
+				if (!darkBalls[i].isActiveAndEnabled)
+				{
+					Debug.Log($"darkball{i} is being enabled");
+					darkBalls[i].gameObject.SetActive(true);
+					darkBalls[i].startingPos = pos;
+					darkBalls[i].GameBeginMultiball();
+				}
+			}
+		}
+		else
+		{
+			for (int i = darkBalls.Count; i > 0; i--)
+			{
+				if (!lightBalls[i].isActiveAndEnabled)
+				{
+					Debug.Log($"lightball{i} is being enabled");
+					lightBalls[i].gameObject.SetActive(true);
+					lightBalls[i].startingPos = pos;
+					lightBalls[i].GameBeginMultiball();
+				}
+			}
+		}
+	}
 
 	public IEnumerator SelfGoalReappear(BallBehav ball)
 	{
@@ -263,10 +295,10 @@ public class Overseer : MonoBehaviour
 		yield return new WaitForSeconds(2);
 		//Debug.Log("Reappear Enacted");
 		ball.gameObject.SetActive(true);
-		ball.GameBegin();
+		ball.Respawn();
 	}
 
-	public void ResetGame()
+	public void ResetGame()		//Called by PointScored method above affter 2 seconds
 	{
 		EventScript.NewRound.Invoke();
 	}

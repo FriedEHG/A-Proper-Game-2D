@@ -29,6 +29,9 @@ public class PongPower : PowerScriptableObj
 				target.GetComponentInParent<Player>().ChangePaddleWidth(amount);
 				break;
 
+			case type.Multiball:
+				target.GetComponentInParent<Player>().Multiball(amount);
+				break;
 
 			default:
 				Debug.LogError("Unchanged Power Type. Change power type within this powers Asset");

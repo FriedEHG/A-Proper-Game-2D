@@ -120,15 +120,6 @@ public class Player : MonoBehaviour
 	void GameBegin()
 	{
 		currentMode = Mode.Game;
-
-		foreach (BallBehav ball in FindObjectsByType<BallBehav>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
-		{
-			if (currentTeam == Team.Light && ball.currentTeam == BallBehav.Team.Light
-				|| currentTeam == Team.Dark && ball.currentTeam == BallBehav.Team.Dark)
-			{
-				ball.StickyStick(this);
-			}
-		}
 	}
 
 	void GameReset()
@@ -225,7 +216,17 @@ public class Player : MonoBehaviour
 		paddle.transform.localScale = new Vector3(currentScale.x*newScaleX, currentScale.y, currentScale.z);
 	}
 
-	enum Mode
+	public void Multiball(float ballFloat)
+	{
+		int balls = (int)ballFloat;
+
+		for (int i = 0; i < balls; i++) 
+		{
+			EventScript.MultiballCall.Invoke(currentTeam == Team.Dark, paddle.transform.position);
+		}
+	}
+
+	public enum Mode
 	{
 		None,
 		Menu,
