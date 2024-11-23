@@ -37,25 +37,23 @@ public class BallBehav : MonoBehaviour
 		EventScript.GameWon.AddListener(Halt);
 
 		InitializeVariables();
-		SetStartPos();
+		//Debug.Log($"Ball start: {name}");
 	}
 
 	void Update()
 	{
 		rb.velocity = movementDirection * speed;
+
+		//if (!isOGBall) { Debug.Log(speed); }
 	}
 
-	public BallBehav()
-	{
-
-	}
 
 	private void InitializeVariables()
 	{
 		sphereCollider = GetComponent<SphereCollider>();
 		rb = GetComponent<Rigidbody>();
 
-		speed = 0f;
+		//speed = 0f;
 		movementDirection = startingDirection.normalized;   //potentially we could randomize this after each spawn
 
 		foreach (Player player in FindObjectsByType<Player>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
@@ -64,20 +62,29 @@ public class BallBehav : MonoBehaviour
 				|| currentTeam == Team.Dark && player.currentTeam == Player.Team.Dark)
 			{
 				ourPlayer = player;
+				ourSpawnPoint = AcquireSpawnpoint();
 
-				Transform[] childrenTransforms = ourPlayer.GetComponentsInChildren<Transform>();
-
-				foreach (var childTransform in childrenTransforms)
-				{
-					if (childTransform != ourPlayer.transform && childTransform.CompareTag("BallSpawn"))
-					{
-						ourSpawnPoint = childTransform.gameObject; // Add matching child to the list
-					}
-				}
-
-//				Debug.Log(ourSpawnPoint.name);
+				//Debug.Log($"Ball {name} Initialized. ourPlayer:{player}. ourTeam:{currentTeam.ToString()}");
 			}
 		}
+
+		SetStartPos();
+	}
+
+	private GameObject AcquireSpawnpoint()
+	{
+		Transform[] childrenTransforms = ourPlayer.GetComponentsInChildren<Transform>();
+		GameObject spawnPoint = this.gameObject;	//this will be changed after like 4 lines, so it's fine if it self references
+
+		foreach (var childTransform in childrenTransforms)
+		{
+			if (childTransform != ourPlayer.transform && childTransform.CompareTag("BallSpawn"))
+			{
+				spawnPoint = childTransform.gameObject;
+			}
+		}
+
+		return spawnPoint;
 	}
 
 	private void SetStartPos()
@@ -96,7 +103,6 @@ public class BallBehav : MonoBehaviour
 
 	public void GameBegin()
 	{
-		SetStartPos();
 		transform.SetPositionAndRotation(startingPos, Quaternion.identity);
 		movementDirection = startingDirection.normalized;
 		if (!isOGBall)
@@ -122,11 +128,16 @@ public class BallBehav : MonoBehaviour
 
 	public void GameBeginMultiball()
 	{
-		SetStartPos();
-		transform.SetPositionAndRotation(startingPos, Quaternion.identity);
-		movementDirection = startingDirection.normalized;
-
+		Start();
+		//Debug.Log($"Multiball SpeedStart:{speedStart}, Current Speed: {speed}");
 		speed = speedStart;
+		//Debug.Log($"Multiball New Current Speed: {speed}");
+
+		transform.SetPositionAndRotation(startingPos, Quaternion.identity);
+
+		//Debug.Log($"Multiball starting Direction{startingDirection}, current Movement Direction {movementDirection}");
+		movementDirection = startingDirection.normalized;
+		//Debug.Log($"Multiball new Movement Direction {movementDirection}");
 
 		//StickyStick(ourPlayer);
 	}
@@ -141,6 +152,8 @@ public class BallBehav : MonoBehaviour
 	void Halt()
 	{
 		speed = 0f;
+
+		Debug.Log("HALT");
 	}
 
 	void OnCollisionEnter(Collision collision)
@@ -165,7 +178,7 @@ public class BallBehav : MonoBehaviour
 		{
 			if (otherObj.GetComponent<BrickBehav>().currentTeam == BrickBehav.Team.Dark && currentTeam == Team.Light ||
 				otherObj.GetComponent<BrickBehav>().currentTeam == BrickBehav.Team.Light && currentTeam == Team.Dark)
-			{   //IF the brick is the opposite team as the ball
+			{   //IF the brick is the opposite team as the ball, should Always be the case due to how we arranged the z-pos of objects
 				BrickBehav brickBehav = otherObj.GetComponent<BrickBehav>();
 				StandardReflect(collision);
 				brickBehav.ChangeTeam();    //send the brick to the other plane and change it's colors

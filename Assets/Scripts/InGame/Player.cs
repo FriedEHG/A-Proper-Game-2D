@@ -185,7 +185,7 @@ public class Player : MonoBehaviour
 	private void Fire()
 	{
 		UnstickBalls();
-		Debug.Log($"Fired Paddle: {name}");
+		//Debug.Log($"Fired Paddle: {name}");
 		//Additional Power Stuff here 
 	}
 
@@ -193,7 +193,7 @@ public class Player : MonoBehaviour
 	{
 		foreach (BallBehav ball in stuckBalls)
 		{
-			Debug.Log($"Ball: {ball.name}, Ball Speed: {ball.speed}, Ball SpeedStart: {ball.speedStart}");
+			//Debug.Log($"Ball: {ball.name}, Ball Speed: {ball.speed}, Ball SpeedStart: {ball.speedStart}");
 			ball.speed = ball.speedStart;
 			ball.transform.parent = ballParent;
 		}
@@ -222,7 +222,7 @@ public class Player : MonoBehaviour
 
 		for (int i = 0; i < balls; i++) 
 		{
-			EventScript.MultiballCall.Invoke(currentTeam == Team.Dark, paddle.transform.position);
+			EventScript.MultiballCall.Invoke(currentTeam == Team.Dark, paddle.transform.position);///////////////////////////////
 		}
 	}
 

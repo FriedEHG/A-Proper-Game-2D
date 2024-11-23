@@ -5,21 +5,20 @@ using UnityEngine;
 
 public class PowerManager : MonoBehaviour
 {
-	public float powerChance = 0.1f;	//stated in the inspector, may be different
+	public float powerChance = 0.0f;    //stated in the inspector, may be different
 
-	List<PowerBase> powersAllInScene;
-	
-	List<PowerBase> powersInPlayDark;
-	List<PowerBase> powersInPlayLight;
+	public List<PowerBase> powersAllInScene;
 
-	List<PowerBase> powersCharDark;
-	List<PowerBase> powersCharLight;
+	public List<PowerBase> powersInPlayDark;
+	public List<PowerBase> powersInPlayLight;
+
+	public List<PowerBase> powersCharDark;
+	public List<PowerBase> powersCharLight;
 
 
 	void Start()
 	{
-		EventScript.BrickBreakLight.AddListener(PowerCheckLight);
-		EventScript.BrickBreakDark.AddListener(PowerCheckDark);
+		EventScript.BrickBreak.AddListener(PowerCheck);
 		//Debug.Log(characterTest);
 		InitializeVariables();
 		InitializePowersInPlay();
@@ -33,28 +32,31 @@ public class PowerManager : MonoBehaviour
 		foreach (PowerBase pow in FindObjectsByType<PowerBase>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
 		{
 			powersAllInScene.Add(pow);
-			Debug.Log($"Power Added: {pow.name}");
+			//Debug.Log($"Power Added: {pow.name}");
 		}
 
 		//Get the character power lists
 
-		powersCharDark = new List<PowerBase>();
-		powersCharLight = new List<PowerBase>();	//NEEDS TO BE UPDATED
+		//powersCharDark = new List<PowerBase>();
+		//powersCharLight = new List<PowerBase>();    //NEEDS TO BE UPDATED
 	}
 
 	private void InitializePowersInPlay()
 	{
 		//Dark
-		foreach (PowerBase powAll in powersAllInScene)
-		{
-			foreach(PowerBase powChar in powersCharDark)
+		foreach (PowerBase powAll in powersAllInScene)  //look through all of the Power objects in the scene and rab the ones that 
+		{                                               //match our Team AND are in the list of CharPowers that we have
+			foreach (PowerBase powChar in powersCharDark)
 			{
-				if (powAll.powerTemplate.currentType == powChar.powerTemplate.currentType 
-					&& powAll.currentTeam == PowerBase.team.Dark)
+				if (powAll.powerTemplate.currentType == powChar.powerTemplate.currentType
+					&& powAll.currentTeam == PowerBase.team.Dark
+					&& !powersInPlayDark.Contains(powChar))
 				{
 					powersInPlayDark.Add(powChar);
 				}
 			}
+
+			powAll.gameObject.SetActive(false);
 		}
 
 		//Light
@@ -63,7 +65,8 @@ public class PowerManager : MonoBehaviour
 			foreach (PowerBase powChar in powersCharLight)
 			{
 				if (powAll.powerTemplate.currentType == powChar.powerTemplate.currentType
-					&& powAll.currentTeam == PowerBase.team.Light)
+					&& powAll.currentTeam == PowerBase.team.Light
+					&& !powersInPlayLight.Contains(powChar))
 				{
 					powersInPlayLight.Add(powChar);
 				}
@@ -71,27 +74,61 @@ public class PowerManager : MonoBehaviour
 		}
 	}
 
-	public void PowerCheckLight()		//SENDS OUT A DEBUG WHEN A POWER IS SUPPOSED TO SPAWN
+	public void PowerCheck(BrickBehav.Team brickTeam, Vector3 blockPos)      //SENDS OUT A DEBUG WHEN A POWER IS SUPPOSED TO SPAWN
 	{
+		//Debug.Log($"Power Check. BrickTeam: {brickTeam}, pos: {pos}");
+
 		float randChance = Random.Range(0f, 1f);
 		int randPow = Mathf.RoundToInt(Random.Range(0.51f, 3.49f));  //Subtract 0.49 from min and add 0.49 to max in order to have more even random distribution
 
+		Vector3 powPos = new Vector3(blockPos.x, blockPos.y, Universals.powerupHeight);
+
+		//Debug.Log($"RandomPower:{randChance}");
 		if (randChance < powerChance)
 		{
-			//PowerSummonLight(randPow);
-			Debug.Log($"LightPower {randPow} Summoned");
+			switch (brickTeam)
+			{
+				case BrickBehav.Team.Dark:	//if a Dark brick broke, it means playerLight broke it. So we need to summon a Light power
+					PowerSummonLight(randPow, powPos);
+
+					break;
+				case BrickBehav.Team.Light:
+					PowerSummonDark(randPow, powPos);
+
+					break;
+				default:
+					Debug.Log($"WAWAWEEWA");
+
+					break;
+			}
 		}
 	}
 
-	public void PowerCheckDark()        //SENDS OUT A DEBUG WHEN A POWER IS SUPPOSED TO SPAWN
+	void PowerSummonDark(int powNum, Vector3 pos)
 	{
-		float randChance = Random.Range(0f, 1f);
-		int randPow = Mathf.RoundToInt(Random.Range(0.51f, 3.49f));  //Subtract 0.49 from min and add 0.49 to max in order to have more even random distribution
+		//Debug.Log($"DarkPower {powNum-1} Summoned");
+		//Debug.Log($"PowerInPlayDark:{powersInPlayDark.Count}, powNum:{powNum}");	
+		PowerBase power = powersInPlayDark[powNum-1];
 
-		if (randChance < powerChance)
+
+		if (!power.gameObject.activeSelf)
 		{
-			//PowerSummonDark(randPow);
-			Debug.Log($"DarkPower {randPow} Summoned");
+			power.gameObject.SetActive(true);
+			power.gameObject.transform.SetPositionAndRotation(pos, Quaternion.identity);
 		}
 	}
+
+	public void PowerSummonLight(int powNum, Vector3 pos)
+	{
+		Debug.Log($"LightPower {powNum} Summoned");
+		PowerBase power = powersInPlayLight[powNum-1];
+
+		if (!power.gameObject.activeSelf)
+		{
+			power.gameObject.SetActive(true);
+			power.gameObject.transform.SetPositionAndRotation(pos, Quaternion.identity);
+		}
+	}
+
+
 }

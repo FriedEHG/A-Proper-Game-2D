@@ -18,8 +18,7 @@ static public class EventScript
 
 	static public UnityEvent PlayUnselectColorChange = new UnityEvent();
 
-	static public UnityEvent BrickBreakLight = new UnityEvent();
-	static public UnityEvent BrickBreakDark = new UnityEvent();
+	static public UnityEvent<BrickBehav.Team, Vector3> BrickBreak = new UnityEvent<BrickBehav.Team, Vector3>();
 
 	static public UnityEvent<bool, Vector3> MultiballCall = new UnityEvent<bool, Vector3>();
 }

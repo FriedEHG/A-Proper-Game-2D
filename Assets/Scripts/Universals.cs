@@ -12,7 +12,7 @@ public static class Universals
 	public static float darkBrickHeight = -11f;
 	public static float lightBrickHeight = 9f;
 
-	public static float powerupHeight = 20f;	//placed on top of everything else
+	public static float powerupHeight = -20f;	//placed on top of everything else
 
 	//During character seletion, the charSelectBttns will assign their Serialized Character to one of these two Variables
 	public static Character lightCharacter = null;

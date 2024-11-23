@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerObject : MonoBehaviour
-						//is just in charge of the physical object that holds the power.
-{
+{ 					//is just in charge of the physical object that holds the power.
 	[SerializeField] float speedStart = 0.02f;
 	float speed;
 	bool isDark;
@@ -17,7 +16,7 @@ public class PowerObject : MonoBehaviour
 		InitializeVariables();
 		InitializeEventListeners();
 
-		transform.position = new Vector3(0, 0, -Universals.powerupHeight);
+		transform.position = new Vector3(0, 0, Universals.powerupHeight);
 	}
 
 	private void InitializeVariables()

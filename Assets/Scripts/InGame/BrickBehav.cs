@@ -27,38 +27,41 @@ public class BrickBehav : MonoBehaviour
     public void BeginGame()
     {
         currentTeam = startingTeam;
-
+		Vector3 newHeight;
 		if (currentTeam == Team.Light)
 		{
 			gameObject.GetComponent<Renderer>().material = lightMaterial;
-			Vector3 newHeight = new Vector3(transform.position.x, transform.position.y, Universals.lightBrickHeight);
-			transform.SetPositionAndRotation(newHeight, Quaternion.identity);
+			newHeight = new Vector3(transform.position.x, transform.position.y, Universals.lightBrickHeight);
 		}
 		else
 		{
 			gameObject.GetComponent<Renderer>().material = darkMaterial;
-			Vector3 newHeight = new Vector3(transform.position.x, transform.position.y, Universals.darkBrickHeight);
-			transform.SetPositionAndRotation(newHeight, Quaternion.identity);
+			newHeight = new Vector3(transform.position.x, transform.position.y, Universals.darkBrickHeight);
 		}
+		transform.SetPositionAndRotation(newHeight, Quaternion.identity);
 	}
 
-    public void ChangeTeam()
+	public void ChangeTeam()
     {
-        if (currentTeam == Team.Dark)
+		//Debug.Log("Ball.ChangeTeam");
+		EventScript.BrickBreak.Invoke(currentTeam, transform.position);
+
+		Vector3 newHeight;
+		if (currentTeam == Team.Dark)
         {
             currentTeam = Team.Light;
             gameObject.GetComponent<Renderer>().material = lightMaterial;
-			Vector3 newHeight = new Vector3(transform.position.x, transform.position.y, Universals.lightBrickHeight);
-			transform.SetPositionAndRotation(newHeight, Quaternion.identity);
+			newHeight = new Vector3(transform.position.x, transform.position.y, Universals.lightBrickHeight);
 		}
         else
         {
 			currentTeam = Team.Dark;
 			gameObject.GetComponent<Renderer>().material = darkMaterial;
-			Vector3 newHeight = new Vector3(transform.position.x, transform.position.y, Universals.darkBrickHeight);
-			transform.SetPositionAndRotation(newHeight, Quaternion.identity);
+			newHeight = new Vector3(transform.position.x, transform.position.y, Universals.darkBrickHeight);
 		}
-    }
+		transform.SetPositionAndRotation(newHeight, Quaternion.identity);
+
+	}
 
 	public enum Team
 	{

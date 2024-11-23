@@ -10,10 +10,11 @@ public class PowerBase : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		//Debug.Log($"Power Triggered: {other.gameObject.name}");
-		if (other.GetComponentInParent<Player>() != null)
+		if (other.GetComponentInParent<Player>() != null
+			&& other.GetComponentInParent<Player>().currentTeam.ToString() == currentTeam.ToString())
 		{
 			//Debug.Log("Power ActivatedAAAAAAAAAAAaaa");
-			Destroy(gameObject);        //Self destruct
+			this.gameObject.SetActive(false);       //Deactivate
 			powerTemplate.Apply(other.gameObject);  //Apply effect
 		}
 	}

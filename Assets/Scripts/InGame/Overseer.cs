@@ -41,7 +41,11 @@ public class Overseer : MonoBehaviour
 		EventScript.MultiballCall.AddListener(SpawnMultiball);
 
 		VariableInitialize();
-		NewRound();
+
+		//NewRound();
+
+
+										StartCoroutine(Begin());//////////////////////
 	}
 
 	public void VariableInitialize()
@@ -260,30 +264,33 @@ public class Overseer : MonoBehaviour
 
 	public void SpawnMultiball(bool isDark, Vector3 pos)
 	{
-		Debug.Log($"isDark: {isDark}, pos: {pos}");
+		Debug.Log($"Multiball Spawn. isDark: {isDark}, pos: {pos}");
+
 		if (isDark)
 		{
-			for (int i = darkBalls.Count; i > 0; i--)
+			for (int i = 0; i < darkBalls.Count - 1; i++)
 			{
 				if (!darkBalls[i].isActiveAndEnabled)
 				{
 					Debug.Log($"darkball{i} is being enabled");
 					darkBalls[i].gameObject.SetActive(true);
-					darkBalls[i].startingPos = pos;
+					//darkBalls[i].startingPos = pos;
 					darkBalls[i].GameBeginMultiball();
+					break;
 				}
 			}
 		}
 		else
 		{
-			for (int i = darkBalls.Count; i > 0; i--)
+			for (int i = 0; i < lightBalls.Count - 1; i++)
 			{
 				if (!lightBalls[i].isActiveAndEnabled)
 				{
-					Debug.Log($"lightball{i} is being enabled");
+					Debug.Log($"lightball {i} is being enabled");
 					lightBalls[i].gameObject.SetActive(true);
-					lightBalls[i].startingPos = pos;
+					//lightBalls[i].startingPos = pos;
 					lightBalls[i].GameBeginMultiball();
+					break;
 				}
 			}
 		}
