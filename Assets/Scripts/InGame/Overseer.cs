@@ -122,7 +122,7 @@ public class Overseer : MonoBehaviour
 	{
 		yield return new WaitForSeconds(1);
 		//Change text to GO
-		centerTextBox.text = "GO";
+		centerTextBox.text = "FIRE!!!";
 		StartCoroutine(Begin());
 	}
 	public IEnumerator Begin()

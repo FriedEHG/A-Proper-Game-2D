@@ -518,7 +518,7 @@ MonoBehaviour:
   startingDirection: {x: 0, y: -1}
   movementDirection: {x: 0, y: 0}
   startingPos: {x: 0, y: 0, z: 0}
-  speedStart: 3.15
+  speedStart: 4
   speed: 0
   currentTeam: 1
   darkMaterial: {fileID: 2100000, guid: 20e319fcfd3bb374f87c291600d28fb7, type: 2}
@@ -886,7 +886,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &94499729
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9615,7 +9615,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1660211639
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10356,7 +10356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef7407bc83ac22546acf17fb93e1b925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerChance: 0.5
+  powerChance: 0.25
   powersAllInScene: []
   powersInPlayDark: []
   powersInPlayLight: []
@@ -11126,7 +11126,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1922714585
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12229,7 +12229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &2106391282
 SpriteRenderer:
   m_ObjectHideFlags: 0
