@@ -29,10 +29,10 @@ public class PowerObject : MonoBehaviour
 
 	private void InitializeEventListeners()
 	{
-		EventScript.CommenceTheGame.AddListener(BeginMovement);
+		EventScript.CommenceTheGame.AddListener(ToasterBath);
 		EventScript.PointScored.AddListener(ToasterBath);
 		EventScript.GameWon.AddListener(ToasterBath);
-		EventScript.NewRound.AddListener(BeginMovement);
+		EventScript.NewRound.AddListener(ToasterBath);
 	}
 
 

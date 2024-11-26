@@ -47,10 +47,10 @@ public class TESTPowerPlayer : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-#if UNITY_EDITOR
-		ClearLog();
+		#if UNITY_EDITOR
+		/////////////////////////////ClearLog();
 		Debug.Log($"{health}/{maxHealth}");
-#endif
+		#endif
 
 
 		moveVector = new Vector3(GameMove.ReadValue<Vector2>().x, 0, GameMove.ReadValue<Vector2>().y) * speed;
@@ -60,9 +60,9 @@ public class TESTPowerPlayer : MonoBehaviour
 
 	private void ClearLog()
 	{
-		var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
-		var type = assembly.GetType("UnityEditor.LogEntries");
-		var method = type.GetMethod("Clear");
-		method.Invoke(new object(), null);
+		//var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
+		//var type = assembly.GetType("UnityEditor.LogEntries");
+		//var method = type.GetMethod("Clear");
+		//method.Invoke(new object(), null);
 	}
 }

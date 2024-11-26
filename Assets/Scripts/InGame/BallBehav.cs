@@ -110,10 +110,10 @@ public class BallBehav : MonoBehaviour
 	{
 		transform.SetPositionAndRotation(startingPos, Quaternion.identity);
 		movementDirection = startingDirection.normalized;
-		//if (!isOGBall)
-		//{
-		//	gameObject.SetActive(false);
-		//}
+		if (!isOGBall)
+		{
+			gameObject.SetActive(false);
+		}
 
 		//speed = speedStart;
 
