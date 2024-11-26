@@ -322,7 +322,8 @@ public class Overseer : MonoBehaviour
 
 	public void ExitToCharSelect()
 	{
-		SceneManager.LoadScene("CharacterSelect");
+		////////////////////////////////////////////////SceneManager.LoadScene("CharacterSelect");
+		SceneManager.LoadScene("MainMenu");
 	}
 
 	public void Quit()

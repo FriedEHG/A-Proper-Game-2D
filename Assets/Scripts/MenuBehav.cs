@@ -28,10 +28,11 @@ public class MenuBehav : MonoBehaviour
 
     public void LaunchClassic()
     {
-        SceneManager.LoadScene("CharacterSelect");
-    }
+		/////////////////////////////////////////SceneManager.LoadScene("CharacterSelect");
+		SceneManager.LoadScene("GameClassic");
+	}
 
-    public void ControlsDisplayReveal()
+	public void ControlsDisplayReveal()
     {
         //Debug.Log($"{controlsDisplay.name}  {controlsDisplay.activeSelf}");
         controlsDisplay.SetActive( true );
