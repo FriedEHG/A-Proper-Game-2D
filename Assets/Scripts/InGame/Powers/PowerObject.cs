@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class PowerObject : MonoBehaviour
@@ -28,7 +29,9 @@ public class PowerObject : MonoBehaviour
 
 	private void InitializeEventListeners()
 	{
-		EventScript.BeginGame.AddListener(BeginMovement);
+		EventScript.CommenceTheGame.AddListener(BeginMovement);
+		EventScript.PointScored.AddListener(ToasterBath);
+		EventScript.GameWon.AddListener(ToasterBath);
 		EventScript.NewRound.AddListener(BeginMovement);
 	}
 
@@ -62,5 +65,10 @@ public class PowerObject : MonoBehaviour
 	private void HaltMovement()
 	{
 		speed = 0f;
+	}
+
+	private void ToasterBath()
+	{
+		this.gameObject.SetActive(false);
 	}
 }

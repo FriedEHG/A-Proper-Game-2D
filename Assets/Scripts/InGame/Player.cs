@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
 
 	void Start()
 	{
-		EventScript.BeginGame.AddListener(GameBegin);
+		EventScript.CommenceTheGame.AddListener(GameBegin);
 		EventScript.NewRound.AddListener(GameReset);
 		EventScript.GameWon.AddListener(GameReset);
 		VariableInitialize();

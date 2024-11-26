@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -23,7 +24,7 @@ public class BallBehav : MonoBehaviour
 	public Material darkMaterial;
 	public Material lightMaterial;
 
-	public bool isOGBall;       //Disable this bool in editor on all balls Except one
+	public bool isOGBall;       //Disable this bool in editor on all balls Except one of each color
 
 	private Player ourPlayer;
 	private GameObject ourSpawnPoint;
@@ -31,22 +32,26 @@ public class BallBehav : MonoBehaviour
 
 	void Start()
 	{
-		EventScript.BeginGame.AddListener(GameBegin);
-		EventScript.PointScored.AddListener(Halt);
-		EventScript.NewRound.AddListener(GameReset);
-		EventScript.GameWon.AddListener(Halt);
+		InitializeEventListeners();
 
 		InitializeVariables();
 		//Debug.Log($"Ball start: {name}");
 	}
 
+
 	void Update()
 	{
 		rb.velocity = movementDirection * speed;
-
-		//if (!isOGBall) { Debug.Log(speed); }
 	}
 
+
+	private void InitializeEventListeners()
+	{
+		EventScript.CommenceTheGame.AddListener(GameBegin);
+		EventScript.PointScored.AddListener(Halt);
+		EventScript.NewRound.AddListener(GameReset);
+		EventScript.GameWon.AddListener(Halt);
+	}
 
 	private void InitializeVariables()
 	{
@@ -101,18 +106,16 @@ public class BallBehav : MonoBehaviour
 		}
 	}
 
-	public void GameBegin()
+	public void GameBegin()		//Happens after the countdown
 	{
 		transform.SetPositionAndRotation(startingPos, Quaternion.identity);
 		movementDirection = startingDirection.normalized;
-		if (!isOGBall)
-		{
-			gameObject.SetActive(false);
-		}
-
+		//if (!isOGBall)
+		//{
+		//	gameObject.SetActive(false);
+		//}
 
 		//speed = speedStart;
-
 
 		StickyStick(ourPlayer);
 	}
@@ -126,7 +129,9 @@ public class BallBehav : MonoBehaviour
 		StickyStick(ourPlayer);
 	}
 
-	public void GameBeginMultiball()
+	
+
+	public void MultiballSpawning()
 	{
 		Start();
 		//Debug.Log($"Multiball SpeedStart:{speedStart}, Current Speed: {speed}");
@@ -142,7 +147,7 @@ public class BallBehav : MonoBehaviour
 		//StickyStick(ourPlayer);
 	}
 
-	void GameReset()
+	void GameReset()	//Happens after every goal
 	{
 		SetStartPos();
 		transform.position = startingPos;
@@ -232,18 +237,6 @@ public class BallBehav : MonoBehaviour
 		movementDirection = Vector2.Reflect(movementDirection, normal);
 		rb.velocity = movementDirection * speed;
 	}
-
-	//public void ReflectLR() //called by the LRTrigger
-	//{
-	//	Debug.Log("ReflectLR");
-	//	rb.velocity = new Vector2(rb.velocity.x * -1, rb.velocity.y);
-	//}
-
-	//public void ReflectUD() //called by the UDTrigger
-	//{
-	//	Debug.Log("ReflectUD");
-	//	rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * -1);
-	//}
 
 
 	public enum Team

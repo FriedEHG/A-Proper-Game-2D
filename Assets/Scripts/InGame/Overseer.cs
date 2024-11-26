@@ -42,10 +42,7 @@ public class Overseer : MonoBehaviour
 
 		VariableInitialize();
 
-		//NewRound();
-
-
-										StartCoroutine(Begin());//////////////////////
+		NewRound();
 	}
 
 	public void VariableInitialize()
@@ -130,7 +127,7 @@ public class Overseer : MonoBehaviour
 		yield return new WaitForSeconds(1);
 		centerScreen.SetActive(false);
 		//Send out an event, have all the game objects only move/allow movement after recieving this signal
-		EventScript.BeginGame.Invoke();
+		EventScript.CommenceTheGame.Invoke();
 	}
 
 	public void PauseCheck()
@@ -212,10 +209,12 @@ public class Overseer : MonoBehaviour
 		{
 			if (ActiveBallCountDark()>1)	//if there are multiple balls, dont respawn the one that just left
 			{
+				ball.isOGBall = false;
 				ball.gameObject.SetActive(false);
 			}
 			else
 			{
+				ball.isOGBall = true;
 				ball.gameObject.SetActive(false);
 				//Only let it reappear if there are no other balls of the same team in play
 				StartCoroutine(SelfGoalReappear(ball));
@@ -225,10 +224,12 @@ public class Overseer : MonoBehaviour
 		{
 			if (ActiveBallCountLight() > 1)  //if there are multiple balls, dont respawn the one that just left
 			{
+				ball.isOGBall = false;
 				ball.gameObject.SetActive(false);
 			}
 			else
 			{
+				ball.isOGBall = true;
 				ball.gameObject.SetActive(false);
 				//Only let it reappear if there are no other balls of the same team in play
 				StartCoroutine(SelfGoalReappear(ball));
@@ -275,7 +276,7 @@ public class Overseer : MonoBehaviour
 					Debug.Log($"darkball{i} is being enabled");
 					darkBalls[i].gameObject.SetActive(true);
 					//darkBalls[i].startingPos = pos;
-					darkBalls[i].GameBeginMultiball();
+					darkBalls[i].MultiballSpawning();
 					break;
 				}
 			}
@@ -289,7 +290,7 @@ public class Overseer : MonoBehaviour
 					Debug.Log($"lightball {i} is being enabled");
 					lightBalls[i].gameObject.SetActive(true);
 					//lightBalls[i].startingPos = pos;
-					lightBalls[i].GameBeginMultiball();
+					lightBalls[i].MultiballSpawning();
 					break;
 				}
 			}

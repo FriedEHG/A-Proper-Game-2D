@@ -14,7 +14,7 @@ public class BrickBehav : MonoBehaviour
     // Start is called before the first frame update
     void Start()
 	{
-		EventScript.BeginGame.AddListener(BeginGame);
+		EventScript.CommenceTheGame.AddListener(BeginGame);
 		EventScript.NewRound.AddListener(BeginGame);
 		BeginGame();
     }

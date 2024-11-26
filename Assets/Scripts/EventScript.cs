@@ -9,7 +9,7 @@ static public class EventScript
 	static public UnityEvent ScoreReset = new UnityEvent();
 	static public UnityEvent ResumeGame = new UnityEvent();
 
-	static public UnityEvent BeginGame = new UnityEvent();
+	static public UnityEvent CommenceTheGame = new UnityEvent();
 	static public UnityEvent PointScored = new UnityEvent();
 	static public UnityEvent NewRound = new UnityEvent();
 	//static public UnityEvent<GameObject> SelfGoal = new UnityEvent<GameObject>(); unused?
