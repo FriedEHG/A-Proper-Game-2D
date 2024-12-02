@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -26,11 +22,12 @@ public class Player : MonoBehaviour
 	Mode currentMode = Mode.None;
 
 	//Powerable Stats
-	public float moveSpd;
+	public float moveSpeedCurrent;
 	public float paddleScale = 1;
 	public bool isSticky = true;
 	//
 
+	public float moveSpeedStart = 6;
 	public Team currentTeam = Team.CHANGETHIS;
 	float moveSpdTime;
 	public float moveLimitX = 3.15f;
@@ -83,7 +80,7 @@ public class Player : MonoBehaviour
 		characterTest = Universals.lightCharacterTest;
 		startPos = transform.position;
 		stuckBalls = new List<BallBehav>();
-
+		moveSpeedCurrent = moveSpeedStart;
 	}
 
 	private void ControlsInitialize()
@@ -131,8 +128,8 @@ public class Player : MonoBehaviour
 	void GameUpdate()
 	{
 		//if pressing GameMove buttons, move
-		moveSpdTime = moveSpd * Time.deltaTime;
-		moveVector = new Vector2(GameMove.ReadValue<Vector2>().x * moveSpdTime, (isNoclip ? GameMove.ReadValue<Vector2>().y : 0) * moveSpd);
+		moveSpdTime = moveSpeedCurrent * Time.deltaTime;
+		moveVector = new Vector2(GameMove.ReadValue<Vector2>().x * moveSpdTime, (isNoclip ? GameMove.ReadValue<Vector2>().y : 0) * moveSpeedCurrent);
 		reflectPoint = reflectPointObj.transform.position;
 
 		if (moveVector.x != 0 || moveVector.y != 0)
@@ -161,7 +158,7 @@ public class Player : MonoBehaviour
 		else { isActionHeld = false; }
 	}
 
-	private void GameMovement()
+	void GameMovement()
 	{
 		if ((movingContainer.transform.position.x - moveSpdTime > -moveLimitX && moveVector.x < 0) ||    //not touching left wall && tryna move left
 			(movingContainer.transform.position.x + moveSpdTime < moveLimitX && moveVector.x > 0))       //not touching right wall && tryna move right
@@ -177,12 +174,12 @@ public class Player : MonoBehaviour
 		}
 	}
 
-	private void PauseCheck()
+	void PauseCheck()
 	{
 		EventScript.PauseGame.Invoke();
 	}
 
-	private void Fire()
+	void Fire()
 	{
 		UnstickBalls();
 		//Debug.Log($"Fired Paddle: {name}");
@@ -224,6 +221,15 @@ public class Player : MonoBehaviour
 		{
 			EventScript.MultiballCall.Invoke(currentTeam == Team.Dark, paddle.transform.position);///////////////////////////////
 		}
+	}
+
+	public void FullSpeedScale(float scale)
+	{
+		moveSpeedCurrent += (scale > 0) ? moveSpeedStart * (scale - 1) : -moveSpeedStart * (scale + 1);
+		//ex.if our scale is 1.2, we want to only ADD 20% to the speed. 
+		//and if scale we get is Negative, then we Add a negative number and move the scale in the opposite way
+
+		EventScript.FullSpeedScaleCall.Invoke((currentTeam == Team.Dark), scale);
 	}
 
 	public enum Mode

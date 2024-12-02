@@ -20,5 +20,10 @@ static public class EventScript
 
 	static public UnityEvent<BrickBehav.Team, Vector3> BrickBreak = new UnityEvent<BrickBehav.Team, Vector3>();
 
-	static public UnityEvent<bool, Vector3> MultiballCall = new UnityEvent<bool, Vector3>();
+	static public UnityEvent<bool, Vector3> MultiballCall = new UnityEvent<bool, Vector3>();    //bool is "isDark", Vector3 is Position
+	static public UnityEvent<bool, float> FullSpeedScaleCall = new UnityEvent<bool, float>();   //bool "isDark", float = Scale we multiply speed by
+	//^^ FullSpeedScaleCall is called by the Player on a FullSpeedUp Power, and the event is Listened to by all of the active Balls and Powerups
+
+
+
 }

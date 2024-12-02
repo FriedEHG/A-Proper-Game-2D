@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,6 +16,9 @@ public class PowerManager : MonoBehaviour
 	public List<PowerBase> powersCharDark;
 	public List<PowerBase> powersCharLight;
 
+	public List<float> powerTimeoutsDark;
+	public List<float> powerTimeoutsLight;
+	public float timerConstant;
 
 	void Start()
 	{
@@ -24,10 +28,17 @@ public class PowerManager : MonoBehaviour
 		InitializePowersInPlay();
 	}
 
+	private void Update()
+	{
+		PowerTimeoutCheck();
+	}
+
 	private void InitializeVariables()
 	{
 		//list of all powers
 		powersAllInScene = new List<PowerBase>();
+		powerTimeoutsDark = new List<float> { 0, 0, 0 };
+		powerTimeoutsLight = new List<float> { 0, 0, 0 };
 
 		foreach (PowerBase pow in FindObjectsByType<PowerBase>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
 		{
@@ -36,19 +47,19 @@ public class PowerManager : MonoBehaviour
 		}
 
 		//Get the character power lists
-
 		//powersCharDark = new List<PowerBase>();
-		//powersCharLight = new List<PowerBase>();    //NEEDS TO BE UPDATED
+		//powersCharLight = new List<PowerBase>();    //NEEDS TO BE UPDATED WHEN WE WANT TO ADD CHARACTER FUNCTIONALITY
+
 	}
 
 	private void InitializePowersInPlay()
 	{
 		//Dark
-		foreach (PowerBase powAll in powersAllInScene)  //look through all of the Power objects in the scene and rab the ones that 
+		foreach (PowerBase powAll in powersAllInScene)  //look through all of the Power objects in the scene and grab the ones that 
 		{                                               //match our Team AND are in the list of CharPowers that we have
-			foreach (PowerBase powChar in powersCharDark)
+			foreach (PowerBase powChar in powersCharDark)   //THIS WILL NEED TO CHANGE WHEN ADDING CHARACTER SELECT FUNCTIONALITY
 			{
-				if (powAll.powerTemplate.currentType == powChar.powerTemplate.currentType
+				if (powAll.pongPowerScriptableObj.currentType == powChar.pongPowerScriptableObj.currentType
 					&& powAll.currentTeam == PowerBase.team.Dark
 					&& !powersInPlayDark.Contains(powChar))
 				{
@@ -56,7 +67,7 @@ public class PowerManager : MonoBehaviour
 				}
 			}
 
-			powAll.gameObject.SetActive(false);
+
 		}
 
 		//Light
@@ -64,7 +75,7 @@ public class PowerManager : MonoBehaviour
 		{
 			foreach (PowerBase powChar in powersCharLight)
 			{
-				if (powAll.powerTemplate.currentType == powChar.powerTemplate.currentType
+				if (powAll.pongPowerScriptableObj.currentType == powChar.pongPowerScriptableObj.currentType
 					&& powAll.currentTeam == PowerBase.team.Light
 					&& !powersInPlayLight.Contains(powChar))
 				{
@@ -74,7 +85,7 @@ public class PowerManager : MonoBehaviour
 		}
 	}
 
-	public void PowerCheck(BrickBehav.Team brickTeam, Vector3 blockPos)      //SENDS OUT A DEBUG WHEN A POWER IS SUPPOSED TO SPAWN
+	public void PowerCheck(BrickBehav.Team brickTeam, Vector3 blockPos)      //ACTIVATES WHEN A POWER IS SUPPOSED TO SPAWN
 	{
 		//Debug.Log($"Power Check. BrickTeam: {brickTeam}, pos: {pos}");
 
@@ -88,7 +99,7 @@ public class PowerManager : MonoBehaviour
 		{
 			switch (brickTeam)
 			{
-				case BrickBehav.Team.Dark:	//if a Dark brick broke, it means playerLight broke it. So we need to summon a Light power
+				case BrickBehav.Team.Dark:  //if a Dark brick broke, it means playerLight broke it. So we need to summon a Light power
 					PowerSummonLight(randPow, powPos);
 
 					break;
@@ -104,31 +115,81 @@ public class PowerManager : MonoBehaviour
 		}
 	}
 
+	private void PowerTimeoutCheck()
+	{
+		timerConstant += Time.deltaTime;
+
+		for (int i = 0; i < powerTimeoutsDark.Count - 1; i++)
+		{
+			if (powerTimeoutsDark[i] != 0)
+			{
+				if (timerConstant >= powerTimeoutsDark[i])
+				{
+					powersInPlayDark[i].pongPowerScriptableObj.ApplyInverse();
+				}
+			}
+		}
+
+		for (int i = 0; i < powerTimeoutsLight.Count - 1; i++)
+		{
+			if (powerTimeoutsLight[i] != 0)
+			{
+				if (timerConstant >= powerTimeoutsLight[i])
+				{
+					powersInPlayLight[i].pongPowerScriptableObj.ApplyInverse();
+				}
+			}
+		}
+	}
+
 	void PowerSummonDark(int powNum, Vector3 pos)
 	{
-		//Debug.Log($"DarkPower {powNum-1} Summoned");
-		//Debug.Log($"PowerInPlayDark:{powersInPlayDark.Count}, powNum:{powNum}");	
-		PowerBase power = powersInPlayDark[powNum-1];
+		Debug.Log($"DarkPower {powNum} Summoned");
+		PowerBase power = powersInPlayDark[powNum - 1];
+		//Debug.Log($"PowerInPlayDark:{powersInPlayDark.Count}, powNum:{powNum}");
 
-
-		if (!power.gameObject.activeSelf)
+		if (power.gameObject.GetComponent<PowerObject>().isCurrent == false)
 		{
-			power.gameObject.SetActive(true);
-			power.gameObject.transform.SetPositionAndRotation(pos, Quaternion.identity);
+			Debug.Log($"LightPower {powNum} is False, now making True");
+			power.gameObject.GetComponent<PowerObject>().Appear(pos);
+			//power.gameObject.SetActive(true);
+			//power.gameObject.transform.SetPositionAndRotation(pos, Quaternion.identity);
 		}
 	}
 
-	public void PowerSummonLight(int powNum, Vector3 pos)
+	void PowerSummonLight(int powNum, Vector3 pos)
 	{
 		Debug.Log($"LightPower {powNum} Summoned");
-		PowerBase power = powersInPlayLight[powNum-1];
+		PowerBase power = powersInPlayLight[powNum - 1];
 
-		if (!power.gameObject.activeSelf)
+		if (power.gameObject.GetComponent<PowerObject>().isCurrent == false)
 		{
-			power.gameObject.SetActive(true);
-			power.gameObject.transform.SetPositionAndRotation(pos, Quaternion.identity);
+			Debug.Log($"LightPower {powNum} is False, now making True");
+			power.gameObject.GetComponent<PowerObject>().Appear(pos);
+			//power.gameObject.SetActive(true);
+			//power.gameObject.transform.SetPositionAndRotation(pos, Quaternion.identity);
 		}
 	}
 
+	public void PowerCountdownBegin(PongPower powerIncoming, float seconds)
+	{
+		for (int i = 0; i < powersInPlayDark.Count - 1; i++)
+		{
+			if (powersInPlayDark[i].GameObject() == powerIncoming.GameObject())
+			{
+				powerTimeoutsDark[i] = Time.time + seconds;
+				return;
+			}
+		}
+
+		for (int i = 0; i < powersInPlayLight.Count - 1; i++)
+		{
+			if (powersInPlayLight[i].GameObject() == powerIncoming.GameObject())
+			{
+				powerTimeoutsLight[i] = Time.time + seconds;
+				return;
+			}
+		}
+	}
 
 }

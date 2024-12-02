@@ -41,7 +41,7 @@ public class CharOverseer : MonoBehaviour
 		VariableInitialize();
 		ControlsInitialize();
 		//Debug.Log(characterTest);
-		
+
 	}
 
 	void VariableInitialize()
@@ -51,35 +51,35 @@ public class CharOverseer : MonoBehaviour
 
 		eventSystemLight.firstSelectedGameObject.GetComponent<Button>().Select();
 
-		eventSystemDark.enabled = true;
 		eventSystemLight.enabled = false;
+		eventSystemDark.enabled = true;
 
 		eventSystemDark.firstSelectedGameObject.GetComponent<Button>().Select();
 
 		menuBehaviour = FindFirstObjectByType<PlaySelMenuBehav>();
-
-
 	}
 
 
 	private void ControlsInitialize()
 	{
 		MenuMoveDark = inputActionAssetDark.FindAction("Navigate");
-		MenuSelectDark = inputActionAssetDark.FindAction("Click");
+		MenuSelectDark = inputActionAssetDark.FindAction("Submit");
 
 		MenuMoveLight = inputActionAssetLight.FindAction("Navigate");
-		MenuSelectLight = inputActionAssetLight.FindAction("Click");
+		MenuSelectLight = inputActionAssetLight.FindAction("Submit");
 	}
 
 
+
+
 	void Update()
-    {
-        if (MenuMoveDark.WasPressedThisFrame() || MenuSelectDark.WasPressedThisFrame())
+	{
+		if (MenuMoveDark.WasPressedThisFrame() || MenuSelectDark.WasPressedThisFrame())
 		{
-			eventSystemDark.enabled = true;
 			eventSystemLight.enabled = false;
-		} 
-		else 
+			eventSystemDark.enabled = true;
+		}
+		else
 		if (MenuMoveLight.WasPressedThisFrame() || MenuSelectLight.WasPressedThisFrame())
 		{
 			eventSystemDark.enabled = false;

@@ -37,8 +37,8 @@ public class PlaySelMenuBehav : MonoBehaviour
 		darkCharSelected = false;
 		darkPlaySelected = false;
 
-		lightPlayerCharDisplay.text = "Lightplayer has not SSelected a Character";
-		darkPlayerCharDisplay.text = "Darkplayer has not SSelected a Character";
+		lightPlayerCharDisplay.text = "Lightplayer has not Selected a Character";
+		darkPlayerCharDisplay.text = "Darkplayer has not Selected a Character";
 	}
 
 
@@ -64,10 +64,10 @@ public class PlaySelMenuBehav : MonoBehaviour
 
 		if (lightPlaySelected)
 		{//If this player was previously the one Readied, now the Play button is back to default color
+			lightPlaySelected = false;  //If they Were ready, now they are not because they chose a new character
 			EventScript.PlayUnselectColorChange.Invoke();
 		}
 
-		lightPlaySelected = false;  //If they Were ready, now they are not because they chose a new character
 	}
 
 	public void CharacterSelectDark(int charnum)
@@ -80,29 +80,24 @@ public class PlaySelMenuBehav : MonoBehaviour
 
 		if (darkPlaySelected)
 		{//If this player was previously the one Readied, now the Play button is back to default color
+			darkPlaySelected = false;   //If they Were ready, now they are not because they chose a new character
 			EventScript.PlayUnselectColorChange.Invoke();
 		}
-
-		darkPlaySelected = false;   //If they Were ready, now they are not because they chose a new character
 	}
 
 	public void PlayGame(string player)
 	{
-		if (player == "Light")
-		{
-			if (lightCharSelected)
-			{//Only allow the player to select Play once they have chosen a character
-				lightPlaySelected = !lightPlaySelected;
-				//Toggle whether or not the Light Player has selected the Play Button
-			}
+		if (player == "Light" && lightCharSelected)
+		{//Only allow the player to select Play once they have chosen a character
+
+			lightPlaySelected = !lightPlaySelected;
+			//Toggle whether or not the Light Player has selected the Play Button
 		}
-		else if (player == "Dark")
-		{
-			if (darkCharSelected)
-			{//Only allow the player to select Play once they have chosen a character
-				darkPlaySelected = !darkPlaySelected;
-				//Toggle whether or not the Dark Player has selected the Play Button
-			}
+		else if (player == "Dark" && darkCharSelected)
+		{//Only allow the player to select Play once they have chosen a character
+
+			darkPlaySelected = !darkPlaySelected;
+			//Toggle whether or not the Dark Player has selected the Play Button
 		}
 
 		if (lightPlaySelected) { playBttnBehav.LightColorSet(); }
@@ -123,7 +118,7 @@ public class PlaySelMenuBehav : MonoBehaviour
 
 	void PlayUnselect()
 	{
-		playBttnBehav.DefaultColorSet(); 
+		playBttnBehav.DefaultColorSet();
 	}
 
 	public void OpenOptions(string player)

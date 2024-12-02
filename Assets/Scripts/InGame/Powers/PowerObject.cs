@@ -1,13 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
 public class PowerObject : MonoBehaviour
-{ 					//is just in charge of the physical object that holds the power.
+{                   //This script is in charge of the Physical object that holds the Powerup Script.
 	[SerializeField] float speedStart = 0.02f;
 	float speed;
 	bool isDark;
+
+	public bool isCurrent;
+
 	PowerBase ourPower;
 	Rigidbody rb;
 
@@ -18,6 +22,7 @@ public class PowerObject : MonoBehaviour
 		InitializeEventListeners();
 
 		transform.position = new Vector3(0, 0, Universals.powerupHeight);
+		ToasterBath();
 	}
 
 	private void InitializeVariables()
@@ -25,6 +30,8 @@ public class PowerObject : MonoBehaviour
 		rb = GetComponent<Rigidbody>();
 		ourPower = GetComponent<PowerBase>();
 		isDark = (ourPower.currentTeam == PowerBase.team.Dark);
+
+		isCurrent = false;
 	}
 
 	private void InitializeEventListeners()
@@ -33,6 +40,8 @@ public class PowerObject : MonoBehaviour
 		EventScript.PointScored.AddListener(ToasterBath);
 		EventScript.GameWon.AddListener(ToasterBath);
 		EventScript.NewRound.AddListener(ToasterBath);
+
+		//EventScript.FullSpeedScaleCall.AddListener(ChangeSpeed);
 	}
 
 
@@ -51,9 +60,30 @@ public class PowerObject : MonoBehaviour
 		}
 	}
 
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.gameObject.GetComponent<GoalBehav>() != null)
+		{
+			ToasterBath();
+		}
+	}
+
+
+	private void ChangeSpeed(bool isDarkIncoming, float scale)
+	{
+		if (isDarkIncoming == isDark)
+		{
+			speed += (scale > 0) ? speedStart * (scale - 1) : -speedStart * (scale + 1);
+			//ex.if our scale is 1.2, we want to only ADD 20% to the speed. 
+			//and if scale we get is Negative, then we Add a negative number and move the scale in the opposite way
+		}
+	}
+
 	public void Appear(Vector3 spawnPoint)
 	{
 		transform.position = spawnPoint;
+		isCurrent = true;
 		BeginMovement();
 	}
 
@@ -67,8 +97,13 @@ public class PowerObject : MonoBehaviour
 		speed = 0f;
 	}
 
-	private void ToasterBath()
+	public void ToasterBath()
 	{
-		this.gameObject.SetActive(false);
+		HaltMovement();
+		isCurrent = false;
+		transform.position = new Vector3(1000, 1000, 1000);
 	}
+
+
+
 }

@@ -27,7 +27,7 @@ public static class Universals
 	public static int requiredScore = 2;
 
 	public static string LightTeam = "Light";	//These may be used to syncronize all "Team" mentions if we feel like it later
-	public static string DarkTeam = "Dark";		//Unused for now, but who knows. Might just do an "isDark"
+	public static string DarkTeam = "Dark";		//Unused for now, but who knows. Might just do an "isDark" bool instead
 	
 	
 }

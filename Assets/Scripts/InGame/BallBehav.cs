@@ -51,6 +51,17 @@ public class BallBehav : MonoBehaviour
 		EventScript.PointScored.AddListener(Halt);
 		EventScript.NewRound.AddListener(GameReset);
 		EventScript.GameWon.AddListener(Halt);
+		EventScript.FullSpeedScaleCall.AddListener(ChangeSpeed);
+	}
+
+	private void ChangeSpeed(bool isDarkIncoming, float scale)
+	{
+		if (isDarkIncoming && currentTeam == Team.Dark || !isDarkIncoming && currentTeam == Team.Light)
+		{
+			speed += (scale > 0) ? speedStart * (scale - 1) : -speedStart * (scale + 1);
+			//ex.if our scale is 1.2, we want to only ADD 20% to the speed. 
+			//and if scale we get is Negative, then we Add a negative number and move the scale in the opposite way
+		}
 	}
 
 	private void InitializeVariables()
@@ -130,21 +141,14 @@ public class BallBehav : MonoBehaviour
 	}
 
 	
-
 	public void MultiballSpawning()
 	{
 		Start();
 		//Debug.Log($"Multiball SpeedStart:{speedStart}, Current Speed: {speed}");
 		speed = speedStart;
-		//Debug.Log($"Multiball New Current Speed: {speed}");
 
 		transform.SetPositionAndRotation(startingPos, Quaternion.identity);
-
-		//Debug.Log($"Multiball starting Direction{startingDirection}, current Movement Direction {movementDirection}");
 		movementDirection = startingDirection.normalized;
-		//Debug.Log($"Multiball new Movement Direction {movementDirection}");
-
-		//StickyStick(ourPlayer);
 	}
 
 	void GameReset()	//Happens after every goal
@@ -157,8 +161,7 @@ public class BallBehav : MonoBehaviour
 	void Halt()
 	{
 		speed = 0f;
-
-		Debug.Log("HALT");
+		//Debug.Log("HALT");
 	}
 
 	void OnCollisionEnter(Collision collision)

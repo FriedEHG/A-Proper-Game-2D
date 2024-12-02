@@ -1,11 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PowerBase : MonoBehaviour
 {
-	public PowerScriptableObj powerTemplate;
-	public team currentTeam;	//designated in the Inspector
+	public PowerScriptableObj pongPowerScriptableObj;
+	public team currentTeam;    //designated in the Inspector
+	public PowerObject ourPowerObject;
+
+	PowerManager powerManager;
+
+
+	private void Start()
+	{
+		ourPowerObject = gameObject.GetComponent<PowerObject>();
+		this.GameObject().GetComponentInParent<PowerManager>();
+	}
 
 	private void OnTriggerEnter(Collider other)
 	{
@@ -14,8 +26,12 @@ public class PowerBase : MonoBehaviour
 			&& other.GetComponentInParent<Player>().currentTeam.ToString() == currentTeam.ToString())
 		{
 			//Debug.Log("Power ActivatedAAAAAAAAAAAaaa");
-			this.gameObject.SetActive(false);       //Deactivate
-			powerTemplate.Apply(other.gameObject);  //Apply effect
+			ourPowerObject.ToasterBath();           //Deactivate
+			Tuple<PongPower, float> returnedTuple = pongPowerScriptableObj.ApplyForTime(other.gameObject);
+			powerManager.PowerCountdownBegin(returnedTuple.Item1, returnedTuple.Item2);
+			//^^ Apply effect 
+
+			
 		}
 	}
 
